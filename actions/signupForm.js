@@ -10,21 +10,24 @@ export default async function signupAction(formData){
     const username = formData.get("username");
     const email = formData.get("email");
     const password = formData.get("password");
-    console.log(username, email, password);
+    const role = formData.get("role");
+    console.log(username, email, password, role);
     await connectDB();
      const hashPassword = await bcrypt.hash(password, 12);
      console.log("Hashed Password:", hashPassword);
     const signupuser = await Signup.create({
         username,
         email,
-        password: hashPassword
+        password: hashPassword,
+        role
     });
        const signupToken = jwt.sign(
         {
             id: signupuser._id,
             username: signupuser.username,
             email: signupuser.email,
-            password:signupuser.password
+            password:signupuser.password,
+            role: signupuser.role
         },
         process.env.JWT_SECRET,
          {
@@ -38,6 +41,9 @@ export default async function signupAction(formData){
     });
     
     console.log("Signup Token saved in cookie");
-    redirect("/about");
-    // console.log(signupuser);
+   if (signupuser.role === "admin") {
+    redirect("/admin");
+}
+
+redirect("/about");
 }

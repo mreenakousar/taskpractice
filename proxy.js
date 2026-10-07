@@ -22,11 +22,12 @@ export async function proxy(request) {
 
         if (timeLeft <= REFRESH_TIME) {
             const newToken = jwt.sign(
-                 {
-        id: decoded.id,
-        username: decoded.username,
-        email: decoded.email,
-    },
+                {
+                    id: decoded.id,
+                    username: decoded.username,
+                    email: decoded.email,
+                    role: decoded.role,
+                },
                 process.env.JWT_SECRET, {
                 expiresIn: "24h",
             }
@@ -40,8 +41,16 @@ export async function proxy(request) {
             });
             return response;
         }
+// nextUrl.pathname current route check krne ke liye use krte hain.
+        if (request.nextUrl.pathname === "/admin") {
 
+            if (decoded.role !== "admin") {
+                return NextResponse.redirect(
+                    new URL("/about", request.url)
+                );
+            }
 
+        }
 
         console.log("Decoded Token:", decoded);
         return NextResponse.next();
@@ -53,9 +62,11 @@ export async function proxy(request) {
     }
 
 }
+// ....
 
 export const config = {
     matcher: [
         "/about",
+        "/admin",
     ],
 };

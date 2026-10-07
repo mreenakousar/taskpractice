@@ -14,6 +14,7 @@ if (!user) {
              <p>ID: {user.id}</p>
             <p>Username: {user.username}</p>
             <p>Email: {user.email}</p>
+            <p>Role: {user.role}</p>
             <form action={logoutAction}>
                 <button type="submit" className="bg-black text-white p-2 rounded">
                     Logout

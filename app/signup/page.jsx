@@ -8,6 +8,10 @@ export default function signUP(){
         <input type="text" placeholder="enter a username" name="username" className="border p-2 rounded" />
         <input type="email" placeholder="enter a email" name="email" className="border p-2 rounded"/>
         <input type="password" placeholder="enter a password" name="password" className="border p-2 rounded"/>
+        <select name="role" className="border p-2 rounded">
+                    <option value="user">User</option>
+                    <option value="admin">Admin</option>
+                </select>
          <button type="submit" className="bg-black text-white p-2 rounded">SignUp</button>
         </form>
         </div>
